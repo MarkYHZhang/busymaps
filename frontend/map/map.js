@@ -718,3 +718,7 @@ function getTrafficData() {
     new google.maps.LatLng(37.782616, -122.400599)
   ];
 }
+function getOption() {
+  var x = document.getElementById("time-option").value;
+  console.log(x)
+}
