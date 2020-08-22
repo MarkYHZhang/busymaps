@@ -157,25 +157,25 @@ function initMap() {
         console.log(s);
       };
 
-      // Call backend server for traffic data
-      // TODO: Replace sample request with data pulled from map
-      sendPOST(TRAFFIC_ENDPOINT, {
-        "swLatitude": place.geometry.viewport.Za.i,
-        "swLongitude": place.geometry.viewport.Va.i,
-        "neLatitude": place.geometry.viewport.Za.j,
-        "neLongitude": place.geometry.viewport.Va.j,
-        "hourOfDay": 11
-      }, callbackFunctionTraffic)
-
-      // Call backend server for busyness traffic data
-      // TODO: Replace sample request with data pulled from map
-      sendPOST(BUSYNESS_ENDPOINT, {
-        "swLatitude": place.geometry.viewport.Za.i,
-        "swLongitude": place.geometry.viewport.Va.i,
-        "neLatitude": place.geometry.viewport.Za.j,
-        "neLongitude": place.geometry.viewport.Va.j,
-        "hourOfDay": 0
-      , callbackFunctionBusyness)
+    //   // Call backend server for traffic data
+    //   // TODO: Replace sample request with data pulled from map
+    //   sendPOST(TRAFFIC_ENDPOINT, {
+    //     "swLatitude": place.geometry.viewport.Za.i,
+    //     "swLongitude": place.geometry.viewport.Va.i,
+    //     "neLatitude": place.geometry.viewport.Za.j,
+    //     "neLongitude": place.geometry.viewport.Va.j,
+    //     "hourOfDay": 11
+    //   }, callbackFunctionTraffic)
+    //
+    //   // Call backend server for busyness traffic data
+    //   // TODO: Replace sample request with data pulled from map
+    //   sendPOST(BUSYNESS_ENDPOINT, {
+    //     "swLatitude": place.geometry.viewport.Za.i,
+    //     "swLongitude": place.geometry.viewport.Va.i,
+    //     "neLatitude": place.geometry.viewport.Za.j,
+    //     "neLongitude": place.geometry.viewport.Va.j,
+    //     "hourOfDay": 0
+    //   , callbackFunctionBusyness)
     }
     else {
       map.setCenter(place.geometry.location);
@@ -201,7 +201,7 @@ function initMap() {
     "placeID": place.place_id,
     "dayOfWeek": "Monday"
   }, callbackFunction)
-      
+
     infowindowContent.children.namedItem("place-name").textContent =
       place.name;
     infowindowContent.children.namedItem("place-id").textContent =
@@ -292,7 +292,7 @@ async function postData(url = '', data = {}) {
   } else {
     alert("HTTP-Error: " + response.status);
   }
-  
+
   return {};
   //return response.json(); // parses JSON response into native JavaScript objects
 }
@@ -809,4 +809,13 @@ function getTrafficData() {
 }
 function getTime() {
   return document.getElementById('range').firstElementChild.value - 1;
+}
+function getDay(){
+  let x=document.querySelectorAll('.btn-group button:focus')
+  if (x.length===0){
+    return "Sunday";
+  }
+  else{
+    return x[0].innerHTML;
+  }
 }
