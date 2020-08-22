@@ -2,10 +2,10 @@
 <html>
   <head>
     <title>Place ID Finder</title>
+    <script src="../scripts/jquery-3.5.1.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="map.js"></script>
     <script src="app.js"></script>
-    <script src="../scripts/jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="map.css">
     <script
@@ -57,11 +57,11 @@
       </button>
       <div id="floating-panel">
         <p>TRAFFIC</p>
-        <div>
+        <div class="option">
           <input type="checkbox" onclick="toggleTrafficHeatmap()" id="trafficHeatmap" checked></input>
         <label for="trafficHeatmap">Toggle Heatmap</label>
         </div>
-        <div>
+        <div class="option">
           <input type="checkbox" onclick="changeTrafficOpacity()" id="trafficOpacity"></input>
           <label for="trafficOpacity">Transparent</label>
         </div>
@@ -69,14 +69,48 @@
         <hr size="1px" width="80%" color="lightgrey" />
 
         <p>BUSYNESS</p>
-        <div>
+        <div class="option">
           <input type="checkbox" onclick="toggleBusynessHeatmap()" id="busynessHeatmap" checked></input>
           <label for="busynessHeatmap">Toggle Heatmap</label>
         </div>
-        <div style="margin-bottom: 10px">
+        <div class="option" style="margin-bottom: 10px">
           <input type="checkbox" onclick="changeBusynessOpacity()" id="busynessOpacity"></input>
           <label for="busynessOpacity">Transparent</label>
         </div>
+
+        <hr size="1px" width="80%" color="lightgrey" />
+
+        <p>TIME</p>
+        <div id="range">
+          <input type="range" min="1" max="24" steps="1" value="1">
+        </div>
+        <ul class="range-labels">
+          <li class="active selected">1</li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
+          <li>5</li>
+          <li>6</li>
+          <li>7</li>
+          <li>8</li>
+          <li>9</li>
+          <li>10</li>
+          <li>11</li>
+          <li>12</li>
+          <li>13</li>
+          <li>14</li>
+          <li>15</li>
+          <li>16</li>
+          <li>17</li>
+          <li>18</li>
+          <li>19</li>
+          <li>20</li>
+          <li>21</li>
+          <li>22</li>
+          <li>23</li>
+          <li>24</li>
+        </ul>
+
       </div>
     </div>
 
