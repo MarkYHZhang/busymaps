@@ -104,10 +104,14 @@ function initMap() {
     map: map
   });
 
+  changeTrafficGradient();
+
   busynessHeatmap = new google.maps.visualization.HeatmapLayer({
     data: getBusynessData(),
     map: map
   });
+
+  changeRadius();
 
   const input = document.getElementById("pac-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
@@ -193,12 +197,13 @@ function changeTrafficGradient() {
     "rgba(191, 0, 31, 1)",
     "rgba(255, 0, 0, 1)"
   ];
-  heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
+  trafficHeatmap.set("gradient", trafficHeatmap.get("gradient") ? null : gradient);
 }
 
 function changeRadius() {
   console.log("Changing radius");
-  heatmap.set("radius", heatmap.get("radius") ? null : 20);
+  trafficHeatmap.set("radius", trafficHeatmap.get("radius") ? null : 10);
+  busynessHeatmap.set("radius", busynessHeatmap.get("radius") ? null : 10);
 }
 
 function getBusynessData() {
