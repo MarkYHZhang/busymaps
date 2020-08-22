@@ -1,6 +1,6 @@
 window.onload = function() {
-    floatingPanel();
     range();
+    floatingPanel();
 
     closeLoading();
 }

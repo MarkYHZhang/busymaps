@@ -175,7 +175,7 @@ function initMap() {
         "neLatitude": place.geometry.viewport.Za.j,
         "neLongitude": place.geometry.viewport.Va.j,
         "hourOfDay": 0
-      , callbackFunctionBusyness)
+      }, callbackFunctionBusyness)
     }
     else {
       map.setCenter(place.geometry.location);
