@@ -126,11 +126,13 @@ function initMap() {
   const infowindow = new google.maps.InfoWindow();
   const infowindowContent = document.getElementById("infowindow-content");
   infowindow.setContent(infowindowContent);
+  console.log('Hello');
   const marker = new google.maps.Marker({
     map: map
   });
   marker.addListener("click", () => {
     infowindow.open(map, marker);
+    console.log("Clicked button");
   });
   autocomplete.addListener("place_changed", () => {
     infowindow.close();
@@ -142,7 +144,38 @@ function initMap() {
 
     if (place.geometry.viewport) {
       map.fitBounds(place.geometry.viewport);
+      console.log("Logging geometry viewport" + place.geometry.viewport);
       console.log(place.geometry.viewport)
+
+      // Update the two callback functions below so that they process the data the way we want it
+      let callbackFunctionTraffic = function (s) {
+        console.log(s);
+      };
+
+      let callbackFunctionBusyness = function (s) {
+        console.log(s);
+      };
+
+      // Call backend server for traffic data
+      // TODO: Replace sample request with data pulled from map
+      sendPOST(TRAFFIC_ENDPOINT, {
+        "swLatitude":43.658661,
+        "swLongitude":-79.381211,
+        "neLatitude":43.665460,
+        "neLongitude":-79.373990,
+        "hourOfDay": 11
+      }, callbackFunctionTraffic)
+
+      // Call backend server for busyness traffic data
+      // TODO: Replace sample request with data pulled from map
+      sendPOST(BUSYNESS_ENDPOINT, {
+        "swLatitude": 43.6425790,
+        "swLongitude": -79.4001173,
+        "neLatitude": 43.6425792,
+        "neLongitude": -79.4001170,
+        "hourOfDay": 0
+      }
+      , callbackFunctionBusyness)
     }
     else {
       map.setCenter(place.geometry.location);
@@ -155,8 +188,6 @@ function initMap() {
     });
     console.log(location)
     marker.setVisible(true);
-
-    console.log(typeof(place.place_id));
 
     let busynessData = {
       "placeID": place.place_id,
