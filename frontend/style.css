@@ -1,3 +1,13 @@
+@font-face {
+    font-family: OpenSans;
+    src: url(./assets/OpenSans-Light.ttf);
+    font-weight: normal;
+}
+
+* {
+    font-family: 'OpenSans';
+}
+
 html {
     --bg-color: #0D131D;
 
