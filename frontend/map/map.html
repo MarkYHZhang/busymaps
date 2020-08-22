@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>Place ID Finder</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="map.js"></script>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="map.css">
-    
-    <title>Simple Map</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5xsFHLdEzj_3Ce8l8A2eqxDB0EvAvyQ8&callback=initMap&libraries=&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5xsFHLdEzj_3Ce8l8A2eqxDB0EvAvyQ8&callback=initMap&libraries=places"
       defer
     ></script>
 
-    <script>
-      "use strict";
-
-      let map;
-
-      function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-          center: {
-            lat: -34.397,
-            lng: 150.644
-          },
-          zoom: 8
-        });
-      }
-    </script>
   </head>
   <body>
+    <div style="display: none">
+      <input
+        id="pac-input"
+        class="controls"
+        type="text"
+        placeholder="Enter a location"
+      />
+    </div>
     <div id="map"></div>
+    <div id="infowindow-content">
+      <span id="place-name" class="title"></span><br />
+      <strong>Place ID:</strong> <span id="place-id"></span><br />
+      <span id="place-address"></span>
+    </div>
   </body>
 </html>
