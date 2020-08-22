@@ -4,6 +4,8 @@
     <title>Place ID Finder</title>
     <script src="../scripts/jquery-3.5.1.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="../scripts/particles.min.js"></script>
+    <script src="../scripts/loadParticles.js"></script>
     <script src="map.js"></script>
     <script src="app.js"></script>
     <link rel="stylesheet" href="../style.css">
@@ -15,6 +17,18 @@
 
   </head>
   <body>
+    <div id="loading">
+      <div id="particles-js"></div>
+      <div id="loading-circle">
+        LOADING
+        <div class="button-circle circle-1"></div>
+        <div class="button-circle circle-2"></div>
+      </div>
+      <script>
+        loadParticles();
+      </script>
+    </div>
+
     <div style="display: none">
       <input
         id="pac-input"
