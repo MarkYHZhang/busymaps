@@ -37,6 +37,8 @@
   display: inline;
 }
 
+/* FLOATING PANEL */
+
 #floating-panel-wrapper{
   background-color: #f5f5f5;
   top: 10px;
@@ -47,7 +49,7 @@
   flex-direction: column;
   border-radius: 5px;
   overflow: hidden;
-  width: 200px;
+  width: 500px;
 }
 
 #floating-panel {
@@ -68,7 +70,7 @@
   padding-left: 2em;
 }
 
-#floating-panel div {
+#floating-panel .option {
   margin: 5px 0;
   padding-left: 2em;
 }
@@ -89,6 +91,102 @@
 #floating-panel-toggle:hover {
   background-color: #f5f5f5;
 }
+
+/* RANGE SELECTOR */
+#range {
+  position: relative;
+  height: 5px;
+  margin: 5px 2em;
+  margin-top: 15px;
+}
+
+#range input {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: -2px;
+  height: 2px;
+  padding-left: 0;
+  -webkit-appearance: none;
+  background-color: grey;
+  outline: none;
+}
+
+#range input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+
+  width: 14px;
+  height: 14px;
+  margin: -2px 0  0;
+  border-radius: 50%;
+  background: #17263b;
+  cursor: pointer;
+  border: 0 !important;
+}
+#range input::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  margin: -2px 0  0;
+  border-radius: 50%;
+  background: #17263b;
+  cursor: pointer;
+  border: 0 !important;
+}
+#range input::-ms-thumb {
+  width: 14px;
+  height: 14px;
+  margin: -2px 0  0;
+  border-radius: 50%;
+  background: #17263b;
+  cursor: pointer;
+  border: 0 !important;
+}
+
+.range-labels {
+  margin-left: 2em;
+  margin-right: 2em;
+  padding: 0;
+  list-style: none;
+}
+
+.range-labels .active {
+  color: white;
+  background-color: #17263b;
+}
+
+.range-labels .selected::before {
+  background: #17263b;
+}
+
+.range-labels .active .selected::before {
+  display: none;
+}
+
+.range-labels li {
+  position: relative;
+  float: left;
+  width: 50px;
+  text-align: center;
+  color: grey;
+  font-size: 0.8em;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.range-labels li::before {
+  position: absolute;
+  top: -24px;
+  right: 0;
+  left: 0;
+  content: "";
+  margin: 0 auto;
+  width: 5px;
+  height: 5px;
+  background: #b2b2b2;
+  border-radius: 50%;
+}
+
+/* HOUR SELECT */
 
 .select-div{
   display: inline;
