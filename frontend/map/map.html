@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-<<<<<<< HEAD:index.html
-    <link rel="stylesheet" href="stylesheet.css">
-    <title>BusyMap</title>
-=======
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="map.css">
     
     <title>Simple Map</title>
->>>>>>> d52c5690027d172e78ef05ca4989907840360b0b:frontend/map/map.html
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5xsFHLdEzj_3Ce8l8A2eqxDB0EvAvyQ8&callback=initMap&libraries=&v=weekly"
@@ -22,6 +17,25 @@
       let map;
 
       function initMap() {
+        
+        /* Data points defined as an array of LatLng objects */
+        var heatmapData = [
+          new google.maps.LatLng(37.782, -122.447),
+          new google.maps.LatLng(37.782, -122.445),
+          new google.maps.LatLng(37.782, -122.443),
+          new google.maps.LatLng(37.782, -122.441),
+          new google.maps.LatLng(37.782, -122.439),
+          new google.maps.LatLng(37.782, -122.437),
+          new google.maps.LatLng(37.782, -122.435),
+          new google.maps.LatLng(37.785, -122.447),
+          new google.maps.LatLng(37.785, -122.445),
+          new google.maps.LatLng(37.785, -122.443),
+          new google.maps.LatLng(37.785, -122.441),
+          new google.maps.LatLng(37.785, -122.439),
+          new google.maps.LatLng(37.785, -122.437),
+          new google.maps.LatLng(37.785, -122.435)
+        ];
+
         map = new google.maps.Map(document.getElementById("map"), {
           center: {
             lat: -34.397,
@@ -109,6 +123,12 @@
             }
           ]
         });
+
+        var heatmap = new google.maps.visualization.HeatmapLayer({
+          data: heatmapData
+        });
+        heatmap.setOptions({radius: heatmap.get('20')});
+        heatmap.setMap(map);
       }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5xsFHLdEzj_3Ce8l8A2eqxDB0EvAvyQ8&callback=initMap"
