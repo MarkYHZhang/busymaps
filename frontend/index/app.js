@@ -109,33 +109,34 @@ config = {
 }
 
 window.onload = function() {
+    $('.animateItem').css({opacity: 0});
+    $('.animateButton').css({opacity: 0});
+
     loadParticles();
-    loadString();
-    // animate(document.getElementsByClassName("animate")[0]);
-}
-
-window.onresize = debounce(function(e) {
-    console.log("end");
-})
-
-function debounce(func){
-    let timer;
-    return function(event){
-        if(timer) clearTimeout(timer);
-        timer = setTimeout(func,200,event);
-    };
+    loadContent();
 }
 
 function loadParticles() {
     particlesJS("particles-js", config);
 }
 
-function loadString() {
+async function loadContent() {
     let title = document.getElementById("animateTitle");
-    let text = document.getElementsByClassName("animateText");
+    let items = document.getElementsByClassName("animateItem");
 
-    animateTitle(title);
-    animateFadeIn(text[0]);
+    $(items).css({
+        "transition": "1s"
+    })
+
+    await animateTitle(title);
+
+    for(let i = 0; i < items.length; ++i) {
+        animateFadeIn(items, i);
+    }
+
+    setTimeout(function() {
+        loadButton();
+    }, (items.length + 1) * 500);
 }
 
 async function animateTitle(e) {
@@ -155,23 +156,36 @@ async function animateTitle(e) {
         });
     }
 
-    setTimeout( async function() {
-        for(let i = 0; i < text.length+1; ++i) {
-            random = text.substr(0, i);
+    return new Promise(function(resolve, _) {
+        setTimeout( async function() {
+            for(let i = 0; i < text.length+1; ++i) {
+                random = text.substr(0, i);
 
-            for(let j = i; j < text.length; ++j) { 
-                random += possible.charAt(Math.floor(Math.random() * possible.length)); 
+                for(let j = i; j < text.length; ++j) { 
+                    random += possible.charAt(Math.floor(Math.random() * possible.length)); 
+                }
+
+                await generateRandomTitle(random);
             }
 
-            await generateRandomTitle(random);
-        }
-    }, 75 );
+            console.log("??");
+            resolve();
+        }, 75 );
+    });
 }
 
-async function animateFadeIn(e) {
-    let el = $(e);
+function animateFadeIn(e, i) {
+    return new Promise(function(resolve, _) {
+        setTimeout(function() {
+            $(e[i])
+                .animate({opacity: 1})
+                .removeClass('animate');
 
-    el
-    .hide()
-    .slideDown(1000);
+            resolve();
+        }, i * 500);
+    });
+}
+
+function loadButton() {
+    $('.animateButton').animate({opacity: 1});
 }
