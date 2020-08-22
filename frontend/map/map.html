@@ -56,10 +56,27 @@
         Hide map options
       </button>
       <div id="floating-panel">
-        <button onclick="toggleTrafficHeatmap()">Toggle Traffic Heatmap</button>
-        <button onclick="changeTrafficOpacity()">Change Traffic Opacity</button>
-        <button onclick="toggleBusynessHeatmap()">Toggle Busyness Heatmap</button>
-        <button onclick="changeBusynessOpacity()">Change Busyness Opacity</button>
+        <p>TRAFFIC</p>
+        <div>
+          <input type="checkbox" onclick="toggleTrafficHeatmap()" id="trafficHeatmap" checked></input>
+        <label for="trafficHeatmap">Toggle Heatmap</label>
+        </div>
+        <div>
+          <input type="checkbox" onclick="changeTrafficOpacity()" id="trafficOpacity"></input>
+          <label for="trafficOpacity">Transparent</label>
+        </div>
+
+        <hr size="1px" width="80%" color="lightgrey" />
+
+        <p>BUSYNESS</p>
+        <div>
+          <input type="checkbox" onclick="toggleBusynessHeatmap()" id="busynessHeatmap" checked></input>
+          <label for="busynessHeatmap">Toggle Heatmap</label>
+        </div>
+        <div style="margin-bottom: 10px">
+          <input type="checkbox" onclick="changeBusynessOpacity()" id="busynessOpacity"></input>
+          <label for="busynessOpacity">Transparent</label>
+        </div>
       </div>
     </div>
 
