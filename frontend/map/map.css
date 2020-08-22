@@ -250,3 +250,33 @@
   background: #b2b2b2;
   border-radius: 50%;
 }
+.btn-group{
+  margin-left: 25px;
+}
+.btn-group button {
+  background-color: grey;
+  font-size: 12px;
+  border: 0.5px solid;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  float: left;
+}
+
+.btn-group button:not(:last-child) {
+  border-right: none;
+}
+
+.btn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.btn-group button:hover {
+  background-color: #17263b;
+}
+.btn-group button:focus{
+    background-color:#17263b;
+    border-color: #17263b
+}
