@@ -807,7 +807,6 @@ function getTrafficData() {
     new google.maps.LatLng(37.782616, -122.400599)
   ];
 }
-function getOption() {
-  var x = document.getElementById("time-option").value;
-  console.log(x)
+function getTime() {
+  return document.getElementById('range').firstElementChild.value - 1;
 }
