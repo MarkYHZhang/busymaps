@@ -1,5 +1,9 @@
 var map, trafficHeatmap, busynessHeatmap;
 
+const TRAFFIC_ENDPOINT = "https://busymap.markzhang.io/traffic/";
+const PLACE_BUSYNESS_ENDPOINT = "https://busymap.markzhang.io/placebusyness/";
+const BUSYNESS_ENDPOINT = "https://busymap.markzhang.io/busyness/";
+
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: {
@@ -151,6 +155,22 @@ function initMap() {
     });
     console.log(location)
     marker.setVisible(true);
+
+    console.log(typeof(place.place_id));
+
+    let busynessData = {
+      "placeID": place.place_id,
+      "dayOfWeek": "Monday"
+    };
+
+    let callbackFunction = function (s) {
+      console.log(s);
+  };
+  sendPOST(PLACE_BUSYNESS_ENDPOINT, {
+    "placeID": place.place_id,
+    "dayOfWeek": "Monday"
+  }, callbackFunction)
+      
     infowindowContent.children.namedItem("place-name").textContent =
       place.name;
     infowindowContent.children.namedItem("place-id").textContent =
@@ -209,7 +229,45 @@ function changeRadius() {
   busynessHeatmap.set("radius", busynessHeatmap.get("radius") ? null : 10);
 }
 
+
+function sendPOST(path, dataDict, onResponseCallback){
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", path, true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          onResponseCallback(xhr.responseText)
+      }
+  };
+  let data = JSON.stringify(dataDict);
+  xhr.send(data);
+}
+
+// POST for place busyness endpoint
+async function postData(url = '', data = {}) {
+  let response = await fetch(url, {
+    method: 'POST',
+    mode: 'no-cors', // no-cors, *cors, same-origin
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+
+  if (response.ok) {
+    alert("Successful HTTP Request" + response.status);
+    let json = await response.json();
+    console.log(response.body);
+  } else {
+    alert("HTTP-Error: " + response.status);
+  }
+  
+  return {};
+  //return response.json(); // parses JSON response into native JavaScript objects
+}
+
 function getBusynessData() {
+
   return [
     new google.maps.LatLng(37.782702, -122.40047),
     new google.maps.LatLng(37.782915, -122.400192),
