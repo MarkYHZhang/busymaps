@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="map.css">
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5xsFHLdEzj_3Ce8l8A2eqxDB0EvAvyQ8&callback=initMap&libraries=places"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5xsFHLdEzj_3Ce8l8A2eqxDB0EvAvyQ8&callback=initMap&libraries=places,visualization"
       defer
     ></script>
 
@@ -20,6 +20,12 @@
         type="text"
         placeholder="Enter a location"
       />
+    </div>
+    <div id="floating-panel">
+      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+      <button onclick="changeGradient()">Change Gradient</button>
+      <button onclick="changeRadius()">Change Radius</button>
+      <button onclick="changeOpacity()">Change Opacity</button>
     </div>
     <div id="map"></div>
     <div id="infowindow-content">
