@@ -1,5 +1,9 @@
 var map, trafficHeatmap, busynessHeatmap;
 
+const TRAFFIC_ENDPOINT = "https://busymap.markzhang.io/traffic/";
+const PLACE_BUSYNESS_ENDPOINT = "https://busymap.markzhang.io/placebusyness/";
+const BUSYNESS_ENDPOINT = "https://busymap.markzhang.io/busyness/";
+
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: {
@@ -151,6 +155,22 @@ function initMap() {
     });
     console.log(location)
     marker.setVisible(true);
+
+    console.log(typeof(place.place_id));
+
+    let busynessData = {
+      "placeID": place.place_id,
+      "dayOfWeek": "Monday"
+    };
+
+    let callbackFunction = function (s) {
+      console.log(s);
+  };
+  sendPOST(PLACE_BUSYNESS_ENDPOINT, {
+    "placeID": place.place_id,
+    "dayOfWeek": "Monday"
+  }, callbackFunction)
+      
     infowindowContent.children.namedItem("place-name").textContent =
       place.name;
     infowindowContent.children.namedItem("place-id").textContent =
@@ -160,10 +180,6 @@ function initMap() {
     infowindow.open(map, marker);
   });
 
-  let busynessData = {
-    "placeID":"ChIJSYuuSx9awokRyrrOFTGg0GY",
-    "dayOfWeek": "Monday"
-  }
 }
 
 function toggleTrafficHeatmap() {
@@ -213,14 +229,14 @@ function changeRadius() {
   busynessHeatmap.set("radius", busynessHeatmap.get("radius") ? null : 10);
 }
 
-// POST for place busyness endpoint with XMLHttpRequest
+
 function sendPOST(path, dataDict, onResponseCallback){
   let xhr = new XMLHttpRequest();
   xhr.open("POST", path, true);
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
-          onResponseCallback()
+          onResponseCallback(xhr.responseText)
       }
   };
   let data = JSON.stringify(dataDict);
@@ -232,20 +248,16 @@ async function postData(url = '', data = {}) {
   let response = await fetch(url, {
     method: 'POST',
     mode: 'no-cors', // no-cors, *cors, same-origin
-    //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    //credentials: 'same-origin', // include, *same-origin, omit
     headers: {
       'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    //redirect: 'follow', // manual, *follow, error
-    //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   });
 
   if (response.ok) {
+    alert("Successful HTTP Request" + response.status);
     let json = await response.json();
-    console.log(response);
+    console.log(response.body);
   } else {
     alert("HTTP-Error: " + response.status);
   }
