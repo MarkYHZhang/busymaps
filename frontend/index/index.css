@@ -4,7 +4,7 @@
     position: absolute;
     height: 100%;
     width: 100%;
-    background-color: var(--bg-color);
+    background: linear-gradient(180deg, var(--bg-color) 0%, 80%, #746854 100%);;
     z-index: -100;
 }
 
@@ -44,6 +44,7 @@ button {
     padding-top: 7px;
     border-radius: 5px;
     text-decoration: none;
+    transition: 0.2s;
 }
 
 #github:hover {
