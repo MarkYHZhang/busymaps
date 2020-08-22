@@ -4,7 +4,7 @@
     position: fixed;
     height: 100%;
     width: 100%;
-    background: linear-gradient(180deg, var(--bg-color) 0%, 80%, #746854 100%);;
+    background: linear-gradient(180deg, var(--bg-color) 0%, 80%, #7d766a 100%);;
     z-index: -100;
 }
 
@@ -37,6 +37,10 @@ button {
     cursor: pointer;
 }
 
+.animate {
+    transform: translateY(-50px);
+}
+
 /* Github icon */
 #github {
     position: fixed;
@@ -62,6 +66,12 @@ button {
 #github p {
     margin: 0;
     margin-left: 10px;
+}
+
+#mapButton {
+    transition: 0.2s;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 /* Content */
@@ -117,4 +127,57 @@ button {
     border-top: none;
     border-radius: 0 0 5px 5px;
     overflow: hidden;
+}
+
+/* Button animation */
+.button-wrapper {
+    position: relative;
+}
+
+.button-wrapper:hover .button-circle, .button-wrapper:hover .button-circle2 {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.button-circle {
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid white;
+    opacity: 0.2;
+    border-radius: 50%;
+    z-index: -1;
+    transition: 0.5s;
+}
+
+.circle-1 {
+    animation: morphing 5s linear infinite;
+}
+
+.circle-2 {
+    animation: morphing 3s linear infinite reverse;
+}
+
+@keyframes morphing {
+    0% {
+        border-radius: 70% 50% 70% 50% / 66% 50% 70% 40%;
+        transform: translate(-50%, -50%);
+    }
+    25% { 
+        border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
+        transform: translate(calc(-50% + 3px), calc(-50% + 3px));
+    }
+    50% {
+        border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
+    }
+    75% {
+        border-radius: 33% 67% 58% 42% / 70% 50% 70% 50%;
+        transform: translate(calc(-50% - 3px), calc(-50% - 3px));
+    }
+    100% {
+        border-radius: 70% 50% 70% 50% / 66% 50% 70% 40%;
+        transform: translate(-50%, -50%);
+    }
 }
