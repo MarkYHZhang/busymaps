@@ -10,4 +10,33 @@
 
 h1 {
     color: white;
+    font-size: 4em;
+    letter-spacing: 3px;
+}
+
+p {
+    color: white;
+    letter-spacing: 0.5px;
+    line-height: 2em;
+}
+
+hr {
+    margin: 30px 0 40px 0;
+    display: block;
+}
+
+button {
+    background: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+body {
+    display: flex;
+    align-items: center;
+}
+
+#content {
+    margin-left: 10em;
 }
