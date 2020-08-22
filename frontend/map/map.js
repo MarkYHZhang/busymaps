@@ -722,3 +722,6 @@ function getOption() {
   var x = document.getElementById("time-option").value;
   console.log(x)
 }
+function outputUpdate(vol) {
+	document.querySelector('#time').value = "Time is "+vol;
+}

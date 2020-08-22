@@ -23,7 +23,7 @@
         placeholder="Enter a location"
       />
     </div>
-      <select onchange=getOption() class="select-css" id="time-option">
+      <!-- <select onchange=getOption() class="select-css" id="time-option">
         <option>Pick a time</option>
         <option>00:00</option>
         <option>01:00</option>
@@ -49,7 +49,38 @@
         <option>22:00</option>
         <option>23:00</option>
         <option>24:00</option>
-      </select>
+      </select> -->
+      <label class="slider-title" for="fader">Time</label>
+      <input class="slider" type="range" min="0" max="24" value="0" id="fader"
+      	step="1" list="timesettings"  oninput=outputUpdate(value)>
+        <output for="fader" id="time">0</output>
+      <datalist id="timesettings">
+      	<option>0</option>
+      	<option>1</option>
+      	<option>2</option>
+      	<option>3</option>
+      	<option>4</option>
+      	<option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+        <option>11</option>
+        <option>12</option>
+        <option>13</option>
+        <option>14</option>
+        <option>15</option>
+        <option>16</option>
+        <option>17</option>
+        <option>18</option>
+        <option>19</option>
+        <option>20</option>
+        <option>21</option>
+        <option>22</option>
+        <option>23</option>
+        <option>24</option>
+      </datalist>
 
     <div id="floating-panel-wrapper">
       <button id="floating-panel-toggle">
