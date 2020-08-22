@@ -114,6 +114,18 @@ window.onload = function() {
     // animate(document.getElementsByClassName("animate")[0]);
 }
 
+window.onresize = debounce(function(e) {
+    console.log("end");
+})
+
+function debounce(func){
+    let timer;
+    return function(event){
+        if(timer) clearTimeout(timer);
+        timer = setTimeout(func,200,event);
+    };
+}
+
 function loadParticles() {
     particlesJS("particles-js", config);
 }
