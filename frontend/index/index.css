@@ -4,7 +4,7 @@
     position: absolute;
     height: 100%;
     width: 100%;
-    background-color: var(--bg-color);
+    background: linear-gradient(180deg, var(--bg-color) 0%, 80%, #746854 100%);;
     z-index: -100;
 }
 
@@ -33,14 +33,42 @@ button {
     cursor: pointer;
 }
 
-/* CONTENT */
+/* Github icon */
+#github {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    margin: 1em;
+    cursor: pointer;
+    padding: 5px 10px;
+    padding-top: 7px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.2s;
+}
 
+#github:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#github path {
+    stroke: white;
+}
+
+#github p {
+    margin: 0;
+    margin-left: 10px;
+}
+
+/* Content */
 #content {
+    width: 70%;
     margin: 0 15%;
     position: absolute;
     bottom: 0;
 }
 
+/* Image screen preview */
 #image-wrapper {
     margin: 0 10%;
     margin-top: 5em;

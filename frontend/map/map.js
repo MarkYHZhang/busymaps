@@ -86,7 +86,17 @@ function initMap() {
               elementType: 'labels.text.stroke',
               stylers: [{color: '#17263c'}]
             }
-          ]
+          ],
+          zoomControl: true,
+          mapTypeControl: true,
+          mapTypeControlOptions: {
+          style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+          position: google.maps.ControlPosition.LEFT_TOP
+          },
+          scaleControl: true,
+          streetViewControl: false,
+          rotateControl: true,
+          fullscreenControl: true
   });
 
   heatmap = new google.maps.visualization.HeatmapLayer({
@@ -119,11 +129,11 @@ function initMap() {
 
     if (place.geometry.viewport) {
       map.fitBounds(place.geometry.viewport);
-    } else {
+    }
+    else {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
-    }
-
+    };
     marker.setPlace({
       placeId: place.place_id,
       location: place.geometry.location
