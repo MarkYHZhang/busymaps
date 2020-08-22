@@ -9,5 +9,87 @@
 }
 
 h1 {
+    margin-top: 0;
     color: white;
+    font-size: 4em;
+    letter-spacing: 3px;
+}
+
+p {
+    color: white;
+    letter-spacing: 0.5px;
+    line-height: 2em;
+}
+
+hr {
+    margin: 30px 0;
+    display: block;
+}
+
+button {
+    background: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* CONTENT */
+
+#content {
+    margin: 0 15%;
+    position: absolute;
+    bottom: 0;
+}
+
+#image-wrapper {
+    margin: 0 10%;
+    margin-top: 5em;
+    position: relative;
+    width: 80%;
+    height: 450px;
+    background-color: white;
+    border-radius: 5px 5px 0 0;
+}
+
+#button-row {
+    height: 20px;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+#button-row > div {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    margin: 0 3px;
+}
+
+#close {
+    background-color: red;
+}
+#minimize {
+    background-color: orange;
+}
+#expand {
+    background-color: green;
+}
+
+#image-inner-wrapper {
+    background-color: #979FAC;
+    position: relative;
+    width: 100%;
+    height: calc(100% - 20px);
+    box-sizing: border-box;
+    padding: 0 8px;
+}
+
+#image-inner-wrapper > div {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+img {
+    max-width: none;
 }

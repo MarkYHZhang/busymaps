@@ -1,140 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>Place ID Finder</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="map.js"></script>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="map.css">
-    
-    <title>Simple Map</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5xsFHLdEzj_3Ce8l8A2eqxDB0EvAvyQ8&callback=initMap&libraries=&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5xsFHLdEzj_3Ce8l8A2eqxDB0EvAvyQ8&callback=initMap&libraries=places,visualization"
       defer
     ></script>
 
-    <script>
-      "use strict";
-
-      let map;
-
-      function initMap() {
-        
-        /* Data points defined as an array of LatLng objects */
-        var heatmapData = [
-          new google.maps.LatLng(37.782, -122.447),
-          new google.maps.LatLng(37.782, -122.445),
-          new google.maps.LatLng(37.782, -122.443),
-          new google.maps.LatLng(37.782, -122.441),
-          new google.maps.LatLng(37.782, -122.439),
-          new google.maps.LatLng(37.782, -122.437),
-          new google.maps.LatLng(37.782, -122.435),
-          new google.maps.LatLng(37.785, -122.447),
-          new google.maps.LatLng(37.785, -122.445),
-          new google.maps.LatLng(37.785, -122.443),
-          new google.maps.LatLng(37.785, -122.441),
-          new google.maps.LatLng(37.785, -122.439),
-          new google.maps.LatLng(37.785, -122.437),
-          new google.maps.LatLng(37.785, -122.435)
-        ];
-
-        map = new google.maps.Map(document.getElementById("map"), {
-          center: {
-            lat: -34.397,
-            lng: 150.644
-          },
-          zoom: 8,
-          styles: [
-            {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
-            {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
-            {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
-            {
-              featureType: 'administrative.locality',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#d59563'}]
-            },
-            {
-              featureType: 'poi',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#d59563'}]
-            },
-            {
-              featureType: 'poi.park',
-              elementType: 'geometry',
-              stylers: [{color: '#263c3f'}]
-            },
-            {
-              featureType: 'poi.park',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#6b9a76'}]
-            },
-            {
-              featureType: 'road',
-              elementType: 'geometry',
-              stylers: [{color: '#38414e'}]
-            },
-            {
-              featureType: 'road',
-              elementType: 'geometry.stroke',
-              stylers: [{color: '#212a37'}]
-            },
-            {
-              featureType: 'road',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#9ca5b3'}]
-            },
-            {
-              featureType: 'road.highway',
-              elementType: 'geometry',
-              stylers: [{color: '#746855'}]
-            },
-            {
-              featureType: 'road.highway',
-              elementType: 'geometry.stroke',
-              stylers: [{color: '#1f2835'}]
-            },
-            {
-              featureType: 'road.highway',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#f3d19c'}]
-            },
-            {
-              featureType: 'transit',
-              elementType: 'geometry',
-              stylers: [{color: '#2f3948'}]
-            },
-            {
-              featureType: 'transit.station',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#d59563'}]
-            },
-            {
-              featureType: 'water',
-              elementType: 'geometry',
-              stylers: [{color: '#17263c'}]
-            },
-            {
-              featureType: 'water',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#515c6d'}]
-            },
-            {
-              featureType: 'water',
-              elementType: 'labels.text.stroke',
-              stylers: [{color: '#17263c'}]
-            }
-          ]
-        });
-
-        var heatmap = new google.maps.visualization.HeatmapLayer({
-          data: heatmapData
-        });
-        heatmap.setOptions({radius: heatmap.get('20')});
-        heatmap.setMap(map);
-      }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5xsFHLdEzj_3Ce8l8A2eqxDB0EvAvyQ8&callback=initMap"
-    defer></script>
   </head>
   <body>
+    <div style="display: none">
+      <input
+        id="pac-input"
+        class="controls"
+        type="text"
+        placeholder="Enter a location"
+      />
+    </div>
+    <div id="floating-panel">
+      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+      <button onclick="changeGradient()">Change Gradient</button>
+      <button onclick="changeRadius()">Change Radius</button>
+      <button onclick="changeOpacity()">Change Opacity</button>
+    </div>
     <div id="map"></div>
+    <div id="infowindow-content">
+      <span id="place-name" class="title"></span><br />
+      <strong>Place ID:</strong> <span id="place-id"></span><br />
+      <span id="place-address"></span>
+    </div>
   </body>
 </html>
