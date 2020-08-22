@@ -157,25 +157,25 @@ function initMap() {
         console.log(s);
       };
 
-    //   // Call backend server for traffic data
-    //   // TODO: Replace sample request with data pulled from map
-    //   sendPOST(TRAFFIC_ENDPOINT, {
-    //     "swLatitude": place.geometry.viewport.Za.i,
-    //     "swLongitude": place.geometry.viewport.Va.i,
-    //     "neLatitude": place.geometry.viewport.Za.j,
-    //     "neLongitude": place.geometry.viewport.Va.j,
-    //     "hourOfDay": 11
-    //   }, callbackFunctionTraffic)
-    //
-    //   // Call backend server for busyness traffic data
-    //   // TODO: Replace sample request with data pulled from map
-    //   sendPOST(BUSYNESS_ENDPOINT, {
-    //     "swLatitude": place.geometry.viewport.Za.i,
-    //     "swLongitude": place.geometry.viewport.Va.i,
-    //     "neLatitude": place.geometry.viewport.Za.j,
-    //     "neLongitude": place.geometry.viewport.Va.j,
-    //     "hourOfDay": 0
-    //   , callbackFunctionBusyness)
+      // Call backend server for traffic data
+      // TODO: Replace sample request with data pulled from map
+      sendPOST(TRAFFIC_ENDPOINT, {
+        "swLatitude": place.geometry.viewport.Za.i,
+        "swLongitude": place.geometry.viewport.Va.i,
+        "neLatitude": place.geometry.viewport.Za.j,
+        "neLongitude": place.geometry.viewport.Va.j,
+        "hourOfDay": 11
+      }, callbackFunctionTraffic)
+
+      // Call backend server for busyness traffic data
+      // TODO: Replace sample request with data pulled from map
+      sendPOST(BUSYNESS_ENDPOINT, {
+        "swLatitude": place.geometry.viewport.Za.i,
+        "swLongitude": place.geometry.viewport.Va.i,
+        "neLatitude": place.geometry.viewport.Za.j,
+        "neLongitude": place.geometry.viewport.Va.j,
+        "hourOfDay": 0
+      }, callbackFunctionBusyness)
     }
     else {
       map.setCenter(place.geometry.location);
