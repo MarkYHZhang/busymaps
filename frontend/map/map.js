@@ -145,7 +145,8 @@ function initMap() {
     if (place.geometry.viewport) {
       map.fitBounds(place.geometry.viewport);
       console.log("Logging geometry viewport" + place.geometry.viewport);
-      console.log(place.geometry.viewport)
+      console.log(place.geometry.viewport);
+
 
       // Update the two callback functions below so that they process the data the way we want it
       let callbackFunctionTraffic = function (s) {
@@ -159,34 +160,33 @@ function initMap() {
       // Call backend server for traffic data
       // TODO: Replace sample request with data pulled from map
       sendPOST(TRAFFIC_ENDPOINT, {
-        "swLatitude":43.658661,
-        "swLongitude":-79.381211,
-        "neLatitude":43.665460,
-        "neLongitude":-79.373990,
+        "swLatitude": place.geometry.viewport.Za.i,
+        "swLongitude": place.geometry.viewport.Va.i,
+        "neLatitude": place.geometry.viewport.Za.j,
+        "neLongitude": place.geometry.viewport.Va.j,
         "hourOfDay": 11
       }, callbackFunctionTraffic)
 
       // Call backend server for busyness traffic data
       // TODO: Replace sample request with data pulled from map
       sendPOST(BUSYNESS_ENDPOINT, {
-        "swLatitude": 43.6425790,
-        "swLongitude": -79.4001173,
-        "neLatitude": 43.6425792,
-        "neLongitude": -79.4001170,
+        "swLatitude": place.geometry.viewport.Za.i,
+        "swLongitude": place.geometry.viewport.Va.i,
+        "neLatitude": place.geometry.viewport.Za.j,
+        "neLongitude": place.geometry.viewport.Va.j,
         "hourOfDay": 0
-      }
       , callbackFunctionBusyness)
     }
     else {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
     };
-    console.log(place.geometry.location)
+    console.log("Logging geometry location" + place.geometry.location);
     marker.setPlace({
       placeId: place.place_id,
       location: place.geometry.location
     });
-    console.log(location)
+    console.log("Logging location" + location);
     marker.setVisible(true);
 
     let busynessData = {
