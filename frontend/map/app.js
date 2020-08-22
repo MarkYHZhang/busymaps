@@ -1,6 +1,19 @@
 window.onload = function() {
-    floatingPanel();
     range();
+    floatingPanel();
+
+    closeLoading();
+}
+
+function closeLoading() {
+    setTimeout( function() {
+        $('#loading').animate({
+            opacity: 0,
+            top: "-50px"
+        }, 400, function() {
+            $('#loading').remove();
+        });
+    }, 500);
 }
 
 function floatingPanel() {

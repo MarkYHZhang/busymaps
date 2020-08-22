@@ -199,7 +199,7 @@ function initMap() {
     "placeID": place.place_id,
     "dayOfWeek": "Monday"
   }, callbackFunction)
-      
+
     infowindowContent.children.namedItem("place-name").textContent =
       place.name;
     infowindowContent.children.namedItem("place-id").textContent =
@@ -296,4 +296,13 @@ function convertToMapObjectsTraffic(data) {
 
 function getTime() {
   return document.getElementById('range').firstElementChild.value - 1;
+}
+function getDay(){
+  let x=document.querySelectorAll('.btn-group button:focus')
+  if (x.length===0){
+    return "Sunday";
+  }
+  else{
+    return x[0].innerHTML;
+  }
 }
