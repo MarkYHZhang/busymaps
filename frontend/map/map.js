@@ -160,6 +160,10 @@ function initMap() {
     infowindow.open(map, marker);
   });
 
+  let busynessData = {
+    "placeID":"ChIJSYuuSx9awokRyrrOFTGg0GY",
+    "dayOfWeek": "Monday"
+  }
 }
 
 function toggleTrafficHeatmap() {
@@ -209,7 +213,49 @@ function changeRadius() {
   busynessHeatmap.set("radius", busynessHeatmap.get("radius") ? null : 10);
 }
 
+// POST for place busyness endpoint with XMLHttpRequest
+function sendPOST(path, dataDict, onResponseCallback){
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", path, true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          onResponseCallback()
+      }
+  };
+  let data = JSON.stringify(dataDict);
+  xhr.send(data);
+}
+
+// POST for place busyness endpoint
+async function postData(url = '', data = {}) {
+  let response = await fetch(url, {
+    method: 'POST',
+    mode: 'no-cors', // no-cors, *cors, same-origin
+    //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    //credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    //redirect: 'follow', // manual, *follow, error
+    //referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+
+  if (response.ok) {
+    let json = await response.json();
+    console.log(response);
+  } else {
+    alert("HTTP-Error: " + response.status);
+  }
+  
+  return {};
+  //return response.json(); // parses JSON response into native JavaScript objects
+}
+
 function getBusynessData() {
+
   return [
     new google.maps.LatLng(37.782702, -122.40047),
     new google.maps.LatLng(37.782915, -122.400192),
