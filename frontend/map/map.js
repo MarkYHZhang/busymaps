@@ -88,7 +88,7 @@ function initMap() {
             }
           ],
           zoomControl: true,
-          mapTypeControl: true,
+          mapTypeControl: false,
           mapTypeControlOptions: {
           style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
           position: google.maps.ControlPosition.LEFT_TOP
@@ -96,7 +96,7 @@ function initMap() {
           scaleControl: true,
           streetViewControl: false,
           rotateControl: true,
-          fullscreenControl: true
+          fullscreenControl: false
   });
 
   heatmap = new google.maps.visualization.HeatmapLayer({
@@ -129,15 +129,18 @@ function initMap() {
 
     if (place.geometry.viewport) {
       map.fitBounds(place.geometry.viewport);
+      console.log(place.geometry.viewport)
     }
     else {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
     };
+    console.log(place.geometry.location)
     marker.setPlace({
       placeId: place.place_id,
       location: place.geometry.location
     });
+    console.log(location)
     marker.setVisible(true);
     infowindowContent.children.namedItem("place-name").textContent =
       place.name;
