@@ -1,0 +1,22 @@
+@font-face {
+    font-family: OpenSans;
+    src: url(./assets/OpenSans-Light.ttf);
+    font-weight: normal;
+}
+
+* {
+    font-family: 'OpenSans';
+}
+
+html {
+    --bg-color: #0D131D;
+
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
