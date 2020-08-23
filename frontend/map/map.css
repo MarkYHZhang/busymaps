@@ -86,8 +86,8 @@
 }
 
 .controls:focus {
-  border: 3px solid #080A9D;
-  box-shadow: 1px 1px 1px 1px #080A9D;
+  border: 3px solid #17263b;;
+  box-shadow: 3px 3px 3px 3px #17263b;
 }
 
 /* FLOATING PANEL */
@@ -271,6 +271,7 @@
   width: calc(2 * var(--height));
   height: var(--height);
   display: flex;
+  margin-left: 13px;
   justify-content: center;
   align-items: baseline;
   position: relative;
