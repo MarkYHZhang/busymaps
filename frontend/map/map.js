@@ -192,7 +192,6 @@ function initMap() {
       infowindowContent.children.namedItem("busyness").setAttribute("data-busyness", JSON.stringify(json.percentage));
       infowindowContent.children.namedItem("busyness").setAttribute("data-time", JSON.stringify(getTime()));
       infowindowContent.children.namedItem("place-name").textContent = place.name;
-      infowindowContent.children.namedItem("place-id").textContent = place.place_id;
       infowindowContent.children.namedItem("place-address").textContent = place.formatted_address;
       infowindow.open(map, marker);
 
