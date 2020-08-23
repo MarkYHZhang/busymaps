@@ -299,7 +299,6 @@ function getTime() {
 }
 var dayName = "Sunday";
 function getDay(){
-  console.log(dayName);
   return dayName;
 }
 function button_active(id){
@@ -308,9 +307,7 @@ function button_active(id){
   for ( var i=0 ;i<len; i++){
     x[i].classList.remove("button-active");
     if(x[i].innerHTML===id){
-      console.log("added");
       x[i].classList.add("button-active");
-      console.log(x[i].classList)
       dayName=x[i].innerHTML;
     }
   }
