@@ -4,93 +4,16 @@ const TRAFFIC_ENDPOINT = "http://api.busymap.xyz:8081/traffic/";
 const PLACE_BUSYNESS_ENDPOINT = "http://api.busymap.xyz:8081/placebusyness/";
 const BUSYNESS_ENDPOINT = "http://api.busymap.xyz:8081/busyness/";
 
+const TORONTO_LAT_LNG = {
+  lat: 43.6532,
+  lng: -79.3832
+};
+
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
-    center: {
-      lat: 43.6532,
-      lng: -79.3832
-    },
+    center: TORONTO_LAT_LNG,
     zoom: 13,
-    styles: [
-            {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
-            {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
-            {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
-            {
-              featureType: 'administrative.locality',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#d59563'}]
-            },
-            {
-              featureType: 'poi',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#d59563'}]
-            },
-            {
-              featureType: 'poi.park',
-              elementType: 'geometry',
-              stylers: [{color: '#263c3f'}]
-            },
-            {
-              featureType: 'poi.park',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#6b9a76'}]
-            },
-            {
-              featureType: 'road',
-              elementType: 'geometry',
-              stylers: [{color: '#38414e'}]
-            },
-            {
-              featureType: 'road',
-              elementType: 'geometry.stroke',
-              stylers: [{color: '#212a37'}]
-            },
-            {
-              featureType: 'road',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#9ca5b3'}]
-            },
-            {
-              featureType: 'road.highway',
-              elementType: 'geometry',
-              stylers: [{color: '#746855'}]
-            },
-            {
-              featureType: 'road.highway',
-              elementType: 'geometry.stroke',
-              stylers: [{color: '#1f2835'}]
-            },
-            {
-              featureType: 'road.highway',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#f3d19c'}]
-            },
-            {
-              featureType: 'transit',
-              elementType: 'geometry',
-              stylers: [{color: '#2f3948'}]
-            },
-            {
-              featureType: 'transit.station',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#d59563'}]
-            },
-            {
-              featureType: 'water',
-              elementType: 'geometry',
-              stylers: [{color: '#17263c'}]
-            },
-            {
-              featureType: 'water',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#515c6d'}]
-            },
-            {
-              featureType: 'water',
-              elementType: 'labels.text.stroke',
-              stylers: [{color: '#17263c'}]
-            }
-          ],
+    styles: getDarkMarkStyle(),
           zoomControl: true,
           mapTypeControl: false,
           mapTypeControlOptions: {
@@ -103,6 +26,7 @@ function initMap() {
           fullscreenControl: false
   });
 
+  // Create traffic and busyness heat maps
   trafficHeatmap = new google.maps.visualization.HeatmapLayer({
     data: [],
     map: map
@@ -113,6 +37,8 @@ function initMap() {
     map: map
   });
 
+
+  // Add listeners for zoom, drag, or slider changes
   map.addListener("zoom_changed", function() {
     console.log("Zoom changed")
     var bounds = map.getBounds();
@@ -149,6 +75,9 @@ function initMap() {
 
   changeRadius(0.5);
   changeBusynessGradient();
+
+  busynessHeatmap.set("opacity", 0.4);
+  trafficHeatmap.set("opacity", 0.5);
 
   const input = document.getElementById("pac-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
@@ -298,12 +227,12 @@ function toggleBusynessHeatmap() {
 }
 function changeTrafficOpacity() {
   console.log("Changing traffic opacity");
-  trafficHeatmap.set("opacity", trafficHeatmap.get("opacity") ? null : 0.2);
+  trafficHeatmap.set("opacity", trafficHeatmap.get("opacity")===0.2 ? 0.5 : 0.2);
 }
 
 function changeBusynessOpacity() {
   console.log("Changing busyness opacity");
-  busynessHeatmap.set("opacity", busynessHeatmap.get("opacity") ? null : 0.2);
+  busynessHeatmap.set("opacity", busynessHeatmap.get("opacity")===0.2 ? 0.4 : 0.2);
 }
 
 function changeBusynessGradient() {
@@ -313,8 +242,8 @@ function changeBusynessGradient() {
     "rgba(0, 255, 255, 1)",
     "rgba(0, 191, 255, 1)",
     "rgba(0, 127, 255, 1)",
-    "rgba(0, 63, 255, 1)",
-    "rgba(0, 0, 255, 1)",
+    "rgb(65,106,236)",
+    "rgb(78,78,255)",
     "rgba(0, 0, 223, 1)",
     "rgba(0, 0, 191, 1)",
     "rgba(0, 0, 159, 1)",
@@ -327,6 +256,17 @@ function changeBusynessGradient() {
   busynessHeatmap.set("gradient", busynessHeatmap.get("gradient") ? null : gradient);
 }
 
+window.addEventListener('load', function () {
+    var bounds = map.getBounds();
+    latNE = bounds.getNorthEast().lat();
+    lngNE = bounds.getNorthEast().lng();
+    latSW = bounds.getSouthWest().lat();
+    lngSW = bounds.getSouthWest().lng();
+    retrieveDataTraffic(latSW, lngSW, latNE, lngNE);
+    retrieveDataBusyness(latSW, lngSW, latNE, lngNE);
+}, false);
+
+
 function changeRadius(viewportDelta) {
   //calculatedRadius = 0.7 / viewportDelta;
   //console.log("calculated radius: " + calculatedRadius);
@@ -335,16 +275,16 @@ function changeRadius(viewportDelta) {
 
   if (viewportDelta < 0.01) {
     console.log("Radius busyness: 50, traffic: 25, delta: " + viewportDelta);
-    busynessHeatmap.set("radius", 40);
-    trafficHeatmap.set("radius", 40);
+    busynessHeatmap.set("radius", 70);
+    trafficHeatmap.set("radius", 70);
   } else if (viewportDelta > 0.1) {
     console.log("Radius busyness: 0, traffic: 1, delta: " + viewportDelta);
-    busynessHeatmap.set("radius", 5);
-    trafficHeatmap.set("radius", 5);
+    busynessHeatmap.set("radius", 13);
+    trafficHeatmap.set("radius", 10);
   } else {
     console.log("Radius busyness: 10, traffic: 5, delta: " + viewportDelta);
-    busynessHeatmap.set("radius", 15);
-    trafficHeatmap.set("radius", 15);
+    busynessHeatmap.set("radius", 22);
+    trafficHeatmap.set("radius", 20);
   }
 }
 
@@ -416,6 +356,89 @@ function convertToMapObjectsTraffic(data) {
 
   }
   return latLngArray;
+}
+
+function getDarkMarkStyle() {
+  return [
+    {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+    {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+    {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+    {
+      featureType: 'administrative.locality',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [{color: '#263c3f'}]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#6b9a76'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [{color: '#38414e'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#212a37'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#9ca5b3'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [{color: '#746855'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#1f2835'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#f3d19c'}]
+    },
+    {
+      featureType: 'transit',
+      elementType: 'geometry',
+      stylers: [{color: '#2f3948'}]
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [{color: '#17263c'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#515c6d'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [{color: '#17263c'}]
+    }
+  ]
 }
 
 function getTime() {
