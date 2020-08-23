@@ -187,6 +187,8 @@ function initMap() {
         console.log(json.response);
       }
 
+      // OPEN WINDOW
+      infowindowContent.setAttribute('data-place', JSON.stringify(place));
       infowindowContent.children.namedItem("latitude").textContent = json.latitude;
       infowindowContent.children.namedItem("longitude").textContent = json.longitude;
       infowindowContent.children.namedItem("busyness").setAttribute("data-busyness", JSON.stringify(json.percentage));
@@ -339,10 +341,11 @@ function convertToMapObjectsTraffic(data) {
 function getTime() {
   return document.getElementById('range').firstElementChild.value - 1;
 }
-var dayName = "Sunday";
+
 function getDay(){
-  return dayName;
+  return document.querySelector('#day-buttons .selected').id;
 }
+
 function button_active(id){
   let x=document.querySelectorAll('.day-btn');
   let len=x.length
