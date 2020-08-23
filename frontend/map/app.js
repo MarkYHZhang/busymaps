@@ -6,6 +6,7 @@ window.onload = function() {
 
     detectInfoWindowChange();
     detectTimeChange();
+    detectDateChange();
 }
 
 function detectInfoWindowChange() {
@@ -23,6 +24,9 @@ function detectInfoWindowChange() {
             $('#busyness-value').text(`No data`);
         } else {
             busyness = JSON.parse(busyness);
+
+            if (busyness.length == 0) return;
+            
             time = JSON.parse(time);
             value = busyness[time] / 100;
             $('#busyness-value').text(`${value}`);
@@ -39,6 +43,34 @@ function detectTimeChange() {
         let time = document.getElementById('busyness').setAttribute('data-time', JSON.stringify(getTime()));
 
         $('#infowindow-content').trigger('data-attribute-changed');
+    })
+}
+
+function detectDateChange() {
+    $(document).on('date-changed', function() {
+        let e = document.getElementById('infowindow-content');
+        let rawData = e.getAttribute('data-place');
+
+        if (rawData == null || rawData == 'undefined') {
+            return;
+        } else {
+            let data = JSON.parse(rawData);
+
+            sendPOST(PLACE_BUSYNESS_ENDPOINT, {
+                "placeID": data.place_id,
+                "dayOfWeek": getDay()
+            }, function(s) {
+                let json = JSON.parse(s);
+                if (json.response) {
+                    console.log(json.response);
+                }
+
+                e.children.namedItem("busyness").setAttribute("data-busyness", JSON.stringify(json.percentage));
+                console.log(JSON.stringify(json.percentage));
+
+                $(e).trigger('data-attribute-changed');
+            })
+        }
     })
 }
 

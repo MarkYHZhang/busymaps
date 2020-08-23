@@ -134,7 +134,9 @@ function initMap() {
       if (json.response) {
         console.log(json.response);
       }
-
+      
+      // OPEN WINDOW
+      infowindowContent.setAttribute('data-place', JSON.stringify(place));
       infowindowContent.children.namedItem("busyness").setAttribute("data-busyness", JSON.stringify(json.percentage));
       infowindowContent.children.namedItem("busyness").setAttribute("data-time", JSON.stringify(getTime()));
       infowindowContent.children.namedItem("place-name").textContent = place.name;
@@ -203,12 +205,12 @@ function changeRadius(viewportDelta) {
     trafficHeatmap.set("radius", 40);
   } else if (viewportDelta > 0.1) {
     console.log("Radius busyness: 0, traffic: 1, delta: " + viewportDelta);
-    busynessHeatmap.set("radius", 5);
-    trafficHeatmap.set("radius", 5);
+    busynessHeatmap.set("radius", 10);
+    trafficHeatmap.set("radius", 10);
   } else {
     console.log("Radius busyness: 10, traffic: 5, delta: " + viewportDelta);
-    busynessHeatmap.set("radius", 15);
-    trafficHeatmap.set("radius", 15);
+    busynessHeatmap.set("radius", 22);
+    trafficHeatmap.set("radius", 22);
   }
 }
 
@@ -368,10 +370,11 @@ function getDarkMarkStyle() {
 function getTime() {
   return document.getElementById('range').firstElementChild.value - 1;
 }
-var dayName = "Sunday";
+
 function getDay(){
-  return dayName;
+  return document.querySelector('#day-buttons .selected').id;
 }
+
 function button_active(id){
   let x=document.querySelectorAll('.day-btn');
   let len=x.length
