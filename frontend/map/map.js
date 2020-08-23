@@ -278,12 +278,12 @@ function changeRadius(viewportDelta) {
     trafficHeatmap.set("radius", 40);
   } else if (viewportDelta > 0.1) {
     console.log("Radius busyness: 0, traffic: 1, delta: " + viewportDelta);
-    busynessHeatmap.set("radius", 5);
-    trafficHeatmap.set("radius", 5);
+    busynessHeatmap.set("radius", 10);
+    trafficHeatmap.set("radius", 10);
   } else {
     console.log("Radius busyness: 10, traffic: 5, delta: " + viewportDelta);
-    busynessHeatmap.set("radius", 15);
-    trafficHeatmap.set("radius", 15);
+    busynessHeatmap.set("radius", 22);
+    trafficHeatmap.set("radius", 22);
   }
 }
 
