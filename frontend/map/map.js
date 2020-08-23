@@ -314,12 +314,18 @@ function convertToMapObjectsTraffic(data) {
 function getTime() {
   return document.getElementById('range').firstElementChild.value - 1;
 }
+var dayName = "Sunday";
 function getDay(){
-  let x=document.querySelectorAll('.btn-group button:focus')
-  if (x.length===0){
-    return "Sunday";
-  }
-  else{
-    return x[0].innerHTML;
+  return dayName;
+}
+function button_active(id){
+  let x=document.querySelectorAll('.day-btn');
+  var len=x.length
+  for ( var i=0 ;i<len; i++){
+    x[i].classList.remove("button-active");
+    if(x[i].innerHTML===id){
+      x[i].classList.add("button-active");
+      dayName=x[i].innerHTML;
+    }
   }
 }
