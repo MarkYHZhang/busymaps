@@ -271,6 +271,7 @@
   width: calc(2 * var(--height));
   height: var(--height);
   display: flex;
+  margin-left: 13px;
   justify-content: center;
   align-items: baseline;
   position: relative;
