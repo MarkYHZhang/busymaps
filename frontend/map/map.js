@@ -330,11 +330,11 @@ function getDay(){
 }
 function button_active(id){
   let x=document.querySelectorAll('.day-btn');
-  var len=x.length
-  for ( var i=0 ;i<len; i++){
-    x[i].classList.remove("button-active");
+  let len=x.length
+  for ( let i=0 ;i<len; i++){
+    x[i].classList.remove("selected");
     if(x[i].innerHTML===id){
-      x[i].classList.add("button-active");
+      x[i].classList.add("selected");
       dayName=x[i].innerHTML;
     }
   }

@@ -238,39 +238,31 @@
   background: #b2b2b2;
   border-radius: 50%;
 }
+
+/* Dates */
 .btn-group{
-  margin-left: 25px;
+  margin-left: 2em;
+  margin-bottom: 10px;
 }
 .btn-group button {
-  background-color: grey;
+  border: none;
+  border-radius: 5px;
+  background-color: transparent;
   font-size: 12px;
-  border: 0.5px solid;
-  color: white;
-  padding: 5px 10px;
+  color: black;
+  padding: 2px 10px;
+  margin: 2.5px;
   cursor: pointer;
   float: left;
+  transition: 0.1s;
 }
-
-.btn-group button:not(:last-child) {
-  border-right: none;
+.btn-group button:not(.selected):hover, .button-active {
+  color: white;
+  background-color:#b2b2b2;
 }
-
-.btn-group:after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.btn-group button:hover {
+.btn-group .selected {
+  color: white;
   background-color: #17263b;
-}
-/* .btn-group button:focus{
-    background-color:#17263b;
-    border-color: #17263b
-} */
-.button-active{
-  background-color:#17263b!important;
-  border-color: #17263b!important;
 }
 
 /* Item content */
