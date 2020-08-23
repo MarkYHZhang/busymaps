@@ -90,18 +90,6 @@
   box-shadow: 1px 1px 1px 1px #080A9D;
 }
 
-.title {
-  font-weight: bold;
-}
-
-#infowindow-content {
-  display: none;
-}
-
-#map #infowindow-content {
-  display: inline;
-}
-
 /* FLOATING PANEL */
 
 #floating-panel-wrapper{
@@ -279,4 +267,64 @@
 .btn-group button:focus{
     background-color:#17263b;
     border-color: #17263b
+}
+
+/* Item content */
+#busyness {
+  --height: 60px;
+  width: calc(2 * var(--height));
+  height: var(--height);
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  position: relative;
+  text-align: center;
+}
+
+#busyness * {
+  margin: 0;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#infowindow-content div[id$="-chart"] {
+  position: absolute;
+  align-self: flex-end;
+}
+
+#infowindow-content div[id$="-text"] {
+  padding-bottom: 0.5em;
+  align-self: flex-end;
+}
+
+#infowindow-content h1 {
+  font-size: 1.5em;
+}
+
+#infowindow-content svg {
+  height: 100%;
+  width: 100%;
+  fill: none;
+  stroke: var(--bg-color);
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+#infowindow-content {
+  display: none;
+}
+
+#map #infowindow-content {
+  display: inline;
+}
+
+.title {
+  font-size: 1.2em;
+  margin: 0.5em 0;
+}
+
+#infowindow-content strong, #place-id {
+  font-size: 0.9em;
+  text-transform: uppercase;
 }

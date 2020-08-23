@@ -3,6 +3,43 @@ window.onload = function() {
     floatingPanel();
 
     closeLoading();
+
+    detectInfoWindowChange();
+}
+
+function detectInfoWindowChange() {
+    $('#infowindow-content').on('data-attribute-changed', function() {
+        console.log(this);
+        let busyness = document.getElementById('busyness').getAttribute('data-busyness');
+        let time = document.getElementById('busyness').getAttribute('data-time');
+        let value = 0;
+
+        if (busyness == 'undefined' || time == 'undefined') {
+            $('#busyness-value').text(`No data`);
+        } else {
+            busyness = JSON.parse(busyness);
+            time = JSON.parse(time);
+            value = busyness[time] / 100;
+            $('#busyness-value').text(`${value}`);
+        }
+
+        $('#busyness-chart').empty();
+        generateChart('busyness-chart', value);
+
+    })
+}
+
+function generateChart(id, val) {
+    let options = {
+        color: '#0D131D',
+        trailColor: '#b2b2b2',
+        easing: 'easeInOut',
+        strokeWidth: 3,
+        duration: 1000,
+        svgStyle: null
+    }
+    let bar = new ProgressBar.SemiCircle(`#${id}`, options);
+    bar.animate(val);
 }
 
 function closeLoading() {
