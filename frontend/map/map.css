@@ -271,7 +271,8 @@
   width: calc(2 * var(--height));
   height: var(--height);
   display: flex;
-  margin-left: 13px;
+  margin: 0 auto;
+  margin-top: 2em;
   justify-content: center;
   align-items: baseline;
   position: relative;
@@ -281,8 +282,11 @@
 #busyness * {
   margin: 0;
   font-size: 0.9em;
-  text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+#busyness p {
+  text-transform: uppercase;
 }
 
 #infowindow-content div[id$="-chart"] {

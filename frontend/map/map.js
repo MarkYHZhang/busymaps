@@ -152,6 +152,7 @@ function initMap() {
 
   const input = document.getElementById("pac-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
+  const placesService = new google.maps.places.PlacesService(map);
   autocomplete.bindTo("bounds", map); // Specify just the place data fields that you need.
 
   autocomplete.setFields(["place_id", "geometry", "name"]);
@@ -163,10 +164,73 @@ function initMap() {
   const marker = new google.maps.Marker({
     map: map
   });
-  marker.addListener("click", () => {
-    infowindow.open(map, marker);
-    console.log("Clicked button");
+
+  map.addListener('click', (e) => {
+    infowindow.close();
+    
+    if (e.placeId) {
+      console.log("its a place!");
+
+      let request = {
+        placeId: e.placeId
+      };
+
+      placesService.getDetails(request, function(place, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          if (!place.geometry) {
+            return;
+          }
+
+          if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+            console.log("Logging geometry viewport" + place.geometry.viewport);
+            console.log(place.geometry.viewport);
+
+            retrieveDataTraffic(place.geometry.viewport.Za.i, place.geometry.viewport.Va.i, place.geometry.viewport.Za.j, place.geometry.viewport.Va.j);
+            retrieveDataBusyness(place.geometry.viewport.Za.i, place.geometry.viewport.Va.i, place.geometry.viewport.Za.j, place.geometry.viewport.Va.j);
+          }
+          else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);
+          };
+
+          console.log("Logging geometry location" + place.geometry.location);
+          marker.setPlace({
+            placeId: place.place_id,
+            location: place.geometry.location
+          });
+          console.log("Logging location" + location);
+          marker.setVisible(true);
+
+          let callbackFunction = function (s) {
+            console.log("Place Busyness data:");
+            console.log(s);
+
+            let json = JSON.parse(s);
+            if (json.response) {
+              console.log(json.response);
+            }
+
+            // OPEN WINDOW
+            infowindowContent.setAttribute('data-place', JSON.stringify(place));
+            infowindowContent.children.namedItem("busyness").setAttribute("data-busyness", JSON.stringify(json.percentage));
+            infowindowContent.children.namedItem("busyness").setAttribute("data-time", JSON.stringify(getTime()));
+            infowindowContent.children.namedItem("place-name").textContent = place.name;
+            infowindowContent.children.namedItem("place-address").textContent = place.formatted_address;
+            infowindow.open(map, marker);
+
+            $(infowindowContent).trigger('data-attribute-changed');
+          };
+
+          sendPOST(PLACE_BUSYNESS_ENDPOINT, {
+            "placeID": place.place_id,
+            "dayOfWeek": getDay()
+          }, callbackFunction)
+        }
+      })
+    }
   });
+
   autocomplete.addListener("place_changed", () => {
     infowindow.close();
     const place = autocomplete.getPlace();
@@ -196,11 +260,6 @@ function initMap() {
     console.log("Logging location" + location);
     marker.setVisible(true);
 
-    let busynessData = {
-      "placeID": place.place_id,
-      "dayOfWeek": "Monday"
-    };
-
     let callbackFunction = function (s) {
       console.log("Place Busyness data:");
       console.log(s);
@@ -209,7 +268,7 @@ function initMap() {
       if (json.response) {
         console.log(json.response);
       }
-      
+
       // OPEN WINDOW
       infowindowContent.setAttribute('data-place', JSON.stringify(place));
       infowindowContent.children.namedItem("busyness").setAttribute("data-busyness", JSON.stringify(json.percentage));
@@ -223,7 +282,7 @@ function initMap() {
 
     sendPOST(PLACE_BUSYNESS_ENDPOINT, {
       "placeID": place.place_id,
-      "dayOfWeek": "Monday"
+      "dayOfWeek": getDay()
     }, callbackFunction)
   });
 
