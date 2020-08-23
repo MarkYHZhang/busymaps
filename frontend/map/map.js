@@ -298,14 +298,20 @@ function getTime() {
   return document.getElementById('range').firstElementChild.value - 1;
 }
 var dayName = "Sunday";
-function setDay(){
-  let x=document.querySelectorAll('.btn-group button:focus')
-  if (x.length===0){
-    dayName="Sunday";
-    console.log(dayName);
-  }
-  else{
-    dayName=x[0].innerHTML;
-    console.log(dayName);
+function getDay(){
+  console.log(dayName);
+  return dayName;
+}
+function button_active(id){
+  let x=document.querySelectorAll('.day-btn');
+  var len=x.length
+  for ( var i=0 ;i<len; i++){
+    x[i].classList.remove("button-active");
+    if(x[i].innerHTML===id){
+      console.log("added");
+      x[i].classList.add("button-active");
+      console.log(x[i].classList)
+      dayName=x[i].innerHTML;
+    }
   }
 }
