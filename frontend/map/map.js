@@ -113,9 +113,19 @@ function initMap() {
     map: map
   });
 
+  map.addListener("zoom_changed", function() {
+    console.log("Zoom changed")
+    var bounds = map.getBounds();
+    latNE = bounds.getNorthEast().lat();
+    lngNE = bounds.getNorthEast().lng();
+    latSW = bounds.getSouthWest().lat();
+    lngSW = bounds.getSouthWest().lng();
+    retrieveDataTraffic(latSW, lngSW, latNE, lngNE);
+    retrieveDataBusyness(latSW, lngSW, latNE, lngNE);
+  });
+
   changeRadius(0.5);
   changeBusynessGradient();
-
 
   const input = document.getElementById("pac-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
@@ -147,40 +157,8 @@ function initMap() {
       console.log("Logging geometry viewport" + place.geometry.viewport);
       console.log(place.geometry.viewport);
 
-
-      // Update the two callback functions below so that they process the data the way we want it
-      let callbackFunctionTraffic = function (s) {
-        var parsed = JSON.parse(s);
-        console.log("Length Traffic Data:" + parsed.length);
-        trafficHeatmap.setData(convertToMapObjectsTraffic(parsed));
-      };
-
-      let callbackFunctionBusyness = function (s) {
-        var parsed = JSON.parse(s);
-        console.log("Length Busyness Data:" + parsed.length);
-        busynessHeatmap.setData(convertToMapObjectsBusyness(parsed));
-        changeRadius(place.geometry.viewport.Za.j - place.geometry.viewport.Za.i);
-      };
-
-      // Call backend server for traffic data
-      // TODO: Replace sample request with data pulled from map
-      sendPOST(TRAFFIC_ENDPOINT, {
-        "swLatitude": place.geometry.viewport.Za.i,
-        "swLongitude": place.geometry.viewport.Va.i,
-        "neLatitude": place.geometry.viewport.Za.j,
-        "neLongitude": place.geometry.viewport.Va.j,
-        "hourOfDay": getTime()
-      }, callbackFunctionTraffic)
-
-      // Call backend server for busyness traffic data
-      // TODO: Replace sample request with data pulled from map
-      sendPOST(BUSYNESS_ENDPOINT, {
-        "swLatitude": place.geometry.viewport.Za.i,
-        "swLongitude": place.geometry.viewport.Va.i,
-        "neLatitude": place.geometry.viewport.Za.j,
-        "neLongitude": place.geometry.viewport.Va.j,
-        "hourOfDay": getTime()
-      }, callbackFunctionBusyness)
+      retrieveDataTraffic(place.geometry.viewport.Za.i, place.geometry.viewport.Va.i, place.geometry.viewport.Za.j, place.geometry.viewport.Va.j);
+      retrieveDataBusyness(place.geometry.viewport.Za.i, place.geometry.viewport.Va.i, place.geometry.viewport.Za.j, place.geometry.viewport.Va.j);
     }
     else {
       map.setCenter(place.geometry.location);
@@ -269,7 +247,10 @@ function changeBusynessGradient() {
 }
 
 function changeRadius(viewportDelta) {
-  console.log("Changing radius");
+  //calculatedRadius = 0.7 / viewportDelta;
+  //console.log("calculated radius: " + calculatedRadius);
+  //busynessHeatmap.set("radius", calculatedRadius);
+  //trafficHeatmap.set("radius", calculatedRadius);
 
   if (viewportDelta < 0.01) {
     console.log("Radius busyness: 50, traffic: 25, delta: " + viewportDelta);
@@ -283,7 +264,42 @@ function changeRadius(viewportDelta) {
     console.log("Radius busyness: 10, traffic: 5, delta: " + viewportDelta);
     busynessHeatmap.set("radius", 15);
     trafficHeatmap.set("radius", 15);
-  }  
+  } 
+}
+
+function retrieveDataTraffic(swLatitude, swLongitude, neLatitude, neLongitude) {
+
+  let callbackFunctionTraffic = function (s) {
+    var parsed = JSON.parse(s);
+    console.log("Length Traffic Data:" + parsed.length);
+    trafficHeatmap.setData(convertToMapObjectsTraffic(parsed));
+  };
+
+  sendPOST(TRAFFIC_ENDPOINT, {
+    "swLatitude": swLatitude,
+    "swLongitude": swLongitude,
+    "neLatitude": neLatitude,
+    "neLongitude": neLongitude,
+    "hourOfDay": getTime()
+  }, callbackFunctionTraffic)
+}
+
+function retrieveDataBusyness(swLatitude, swLongitude, neLatitude, neLongitude) {
+
+  let callbackFunctionBusyness = function (s) {
+    var parsed = JSON.parse(s);
+    console.log("Length Busyness Data:" + parsed.length);
+    busynessHeatmap.setData(convertToMapObjectsBusyness(parsed));
+    changeRadius(neLatitude - swLatitude);
+  };
+
+  sendPOST(BUSYNESS_ENDPOINT, {
+    "swLatitude": swLatitude,
+    "swLongitude": swLongitude,
+    "neLatitude": neLatitude,
+    "neLongitude": neLongitude,
+    "hourOfDay": getTime()
+  }, callbackFunctionBusyness)
 }
 
 function sendPOST(path, dataDict, onResponseCallback){
@@ -303,7 +319,7 @@ function convertToMapObjectsBusyness(data) {
   var len = data.length;
   var latLngArray = [];
   for (var i = 0; i < len; i++) {
-    coord = {location: new google.maps.LatLng(data[i]["latitude"], data[i]["longitude"]), weight: data[i]["percentage"]* 1000}
+    coord = {location: new google.maps.LatLng(data[i]["latitude"], data[i]["longitude"]), weight: data[i]["percentage"] * 1000}
     latLngArray.push(coord);
 
   }
