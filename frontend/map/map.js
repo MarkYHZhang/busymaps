@@ -4,93 +4,16 @@ const TRAFFIC_ENDPOINT = "http://api.busymap.xyz:8081/traffic/";
 const PLACE_BUSYNESS_ENDPOINT = "http://api.busymap.xyz:8081/placebusyness/";
 const BUSYNESS_ENDPOINT = "http://api.busymap.xyz:8081/busyness/";
 
+const TORONTO_LAT_LNG = {
+  lat: 43.6532,
+  lng: -79.3832
+};
+
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
-    center: {
-      lat: 43.6532,
-      lng: -79.3832
-    },
+    center: TORONTO_LAT_LNG,
     zoom: 13,
-    styles: [
-            {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
-            {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
-            {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
-            {
-              featureType: 'administrative.locality',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#d59563'}]
-            },
-            {
-              featureType: 'poi',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#d59563'}]
-            },
-            {
-              featureType: 'poi.park',
-              elementType: 'geometry',
-              stylers: [{color: '#263c3f'}]
-            },
-            {
-              featureType: 'poi.park',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#6b9a76'}]
-            },
-            {
-              featureType: 'road',
-              elementType: 'geometry',
-              stylers: [{color: '#38414e'}]
-            },
-            {
-              featureType: 'road',
-              elementType: 'geometry.stroke',
-              stylers: [{color: '#212a37'}]
-            },
-            {
-              featureType: 'road',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#9ca5b3'}]
-            },
-            {
-              featureType: 'road.highway',
-              elementType: 'geometry',
-              stylers: [{color: '#746855'}]
-            },
-            {
-              featureType: 'road.highway',
-              elementType: 'geometry.stroke',
-              stylers: [{color: '#1f2835'}]
-            },
-            {
-              featureType: 'road.highway',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#f3d19c'}]
-            },
-            {
-              featureType: 'transit',
-              elementType: 'geometry',
-              stylers: [{color: '#2f3948'}]
-            },
-            {
-              featureType: 'transit.station',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#d59563'}]
-            },
-            {
-              featureType: 'water',
-              elementType: 'geometry',
-              stylers: [{color: '#17263c'}]
-            },
-            {
-              featureType: 'water',
-              elementType: 'labels.text.fill',
-              stylers: [{color: '#515c6d'}]
-            },
-            {
-              featureType: 'water',
-              elementType: 'labels.text.stroke',
-              stylers: [{color: '#17263c'}]
-            }
-          ],
+    styles: getDarkMarkStyle(),
           zoomControl: true,
           mapTypeControl: false,
           mapTypeControlOptions: {
@@ -103,6 +26,7 @@ function initMap() {
           fullscreenControl: false
   });
 
+  // Create traffic and busyness heat maps
   trafficHeatmap = new google.maps.visualization.HeatmapLayer({
     data: [],
     map: map
@@ -114,6 +38,7 @@ function initMap() {
   });
 
 
+  // Add listeners for zoom, drag, or slider changes
   map.addListener("zoom_changed", function() {
     console.log("Zoom changed")
     var bounds = map.getBounds();
@@ -372,6 +297,89 @@ function convertToMapObjectsTraffic(data) {
 
   }
   return latLngArray;
+}
+
+function getDarkMarkStyle() {
+  return [
+    {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+    {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+    {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+    {
+      featureType: 'administrative.locality',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [{color: '#263c3f'}]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#6b9a76'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [{color: '#38414e'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#212a37'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#9ca5b3'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [{color: '#746855'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#1f2835'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#f3d19c'}]
+    },
+    {
+      featureType: 'transit',
+      elementType: 'geometry',
+      stylers: [{color: '#2f3948'}]
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#d59563'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [{color: '#17263c'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#515c6d'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [{color: '#17263c'}]
+    }
+  ]
 }
 
 function getTime() {
