@@ -297,12 +297,15 @@ function convertToMapObjectsTraffic(data) {
 function getTime() {
   return document.getElementById('range').firstElementChild.value - 1;
 }
-function getDay(){
+var dayName = "Sunday";
+function setDay(){
   let x=document.querySelectorAll('.btn-group button:focus')
   if (x.length===0){
-    return "Sunday";
+    dayName="Sunday";
+    console.log(dayName);
   }
   else{
-    return x[0].innerHTML;
+    dayName=x[0].innerHTML;
+    console.log(dayName);
   }
 }
