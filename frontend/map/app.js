@@ -3,6 +3,56 @@ window.onload = function() {
     floatingPanel();
 
     closeLoading();
+
+    detectInfoWindowChange();
+    detectTimeChange();
+}
+
+function detectInfoWindowChange() {
+    $('#infowindow-content').on('data-attribute-changed', function() {
+        console.log(this);
+        let e = document.getElementById('busyness');
+
+        if (!e || e == null || e == 'undefined') return;
+
+        let busyness = e.getAttribute('data-busyness');
+        let time = e.getAttribute('data-time');
+        let value = 0;
+
+        if (busyness == 'undefined' || time == 'undefined' || busyness == null || time == null) {
+            $('#busyness-value').text(`No data`);
+        } else {
+            busyness = JSON.parse(busyness);
+            time = JSON.parse(time);
+            value = busyness[time] / 100;
+            $('#busyness-value').text(`${value}`);
+        }
+
+        $('#busyness-chart').empty();
+        generateChart('busyness-chart', value);
+    })
+}
+
+function detectTimeChange() {
+    $(document).on('time-changed', function() {
+        console.log(getTime());
+        let time = document.getElementById('busyness').setAttribute('data-time', JSON.stringify(getTime()));
+
+        $('#infowindow-content').trigger('data-attribute-changed');
+    })
+}
+
+function generateChart(id, val) {
+    let options = {
+        color: '#0D131D',
+        trailColor: '#b2b2b2',
+        easing: 'easeInOut',
+        strokeWidth: 3,
+        duration: 1000,
+        svgStyle: null
+    }
+    let bar = new ProgressBar.SemiCircle(`#${id}`, options);
+    bar.animate(val);
 }
 
 function closeLoading() {
@@ -73,6 +123,7 @@ function range() {
 
     $rangeInput.on('input', function () {
         sheet.textContent = getTrackStyle(this);
+        $(document).trigger('time-changed');
     });
 
     // Change input value on label click
@@ -80,5 +131,6 @@ function range() {
         let index = $(this).index();
     
         $rangeInput.val(index + 1).trigger('input');
+        $(document).trigger('date-changed');
     });
 }

@@ -157,6 +157,7 @@ function initMap() {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
     };
+
     console.log("Logging geometry location" + place.geometry.location);
     marker.setPlace({
       placeId: place.place_id,
@@ -173,19 +174,28 @@ function initMap() {
     let callbackFunction = function (s) {
       console.log("Place Busyness data:");
       console.log(s);
-  };
-  sendPOST(PLACE_BUSYNESS_ENDPOINT, {
-    "placeID": place.place_id,
-    "dayOfWeek": "Monday"
-  }, callbackFunction)
 
-    infowindowContent.children.namedItem("place-name").textContent =
-      place.name;
-    infowindowContent.children.namedItem("place-id").textContent =
-      place.place_id;
-    infowindowContent.children.namedItem("place-address").textContent =
-      place.formatted_address;
-    infowindow.open(map, marker);
+      let json = JSON.parse(s);
+      if (json.response) {
+        console.log(json.response);
+      }
+
+      infowindowContent.children.namedItem("latitude").textContent = json.latitude;
+      infowindowContent.children.namedItem("longitude").textContent = json.longitude;
+      infowindowContent.children.namedItem("busyness").setAttribute("data-busyness", JSON.stringify(json.percentage));
+      infowindowContent.children.namedItem("busyness").setAttribute("data-time", JSON.stringify(getTime()));
+      infowindowContent.children.namedItem("place-name").textContent = place.name;
+      infowindowContent.children.namedItem("place-id").textContent = place.place_id;
+      infowindowContent.children.namedItem("place-address").textContent = place.formatted_address;
+      infowindow.open(map, marker);
+
+      $(infowindowContent).trigger('data-attribute-changed');
+    };
+
+    sendPOST(PLACE_BUSYNESS_ENDPOINT, {
+      "placeID": place.place_id,
+      "dayOfWeek": "Monday"
+    }, callbackFunction)
   });
 
 }
@@ -337,4 +347,6 @@ function button_active(id){
       dayName=x[i].innerHTML;
     }
   }
+
+  $(document).trigger('date-changed');
 }
