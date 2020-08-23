@@ -103,6 +103,19 @@ function initMap() {
           fullscreenControl: false
   });
 
+  trafficHeatmap = new google.maps.visualization.HeatmapLayer({
+    data: [],
+    map: map
+  });
+
+  busynessHeatmap = new google.maps.visualization.HeatmapLayer({
+    data: [],
+    map: map
+  });
+
+  changeRadius(0.5);
+  changeBusynessGradient();
+
 
   const input = document.getElementById("pac-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
@@ -139,19 +152,14 @@ function initMap() {
       let callbackFunctionTraffic = function (s) {
         var parsed = JSON.parse(s);
         console.log("Length Traffic Data:" + parsed.length);
-        busynessHeatmap = new google.maps.visualization.HeatmapLayer({
-          data: convertToMapObjectsTraffic(parsed),
-          map: map
-        });
+        trafficHeatmap.setData(convertToMapObjectsTraffic(parsed));
       };
 
       let callbackFunctionBusyness = function (s) {
         var parsed = JSON.parse(s);
         console.log("Length Busyness Data:" + parsed.length);
-        trafficHeatmap = new google.maps.visualization.HeatmapLayer({
-          data: convertToMapObjectsBusyness(parsed),
-          map: map
-        });
+        busynessHeatmap.setData(convertToMapObjectsBusyness(parsed));
+        changeRadius(place.geometry.viewport.Za.j - place.geometry.viewport.Za.i);
       };
 
       // Call backend server for traffic data
@@ -225,12 +233,10 @@ function toggleTrafficHeatmap() {
   console.log("Toggling traffic heat map");
   trafficHeatmap.setMap(trafficHeatmap.getMap() ? null : map);
 }
-
 function toggleBusynessHeatmap() {
-  console.log("Toggling traffic heat map");
+  console.log("Toggling busyness heat map");
   busynessHeatmap.setMap(busynessHeatmap.getMap() ? null : map);
 }
-
 function changeTrafficOpacity() {
   console.log("Changing traffic opacity");
   trafficHeatmap.set("opacity", trafficHeatmap.get("opacity") ? null : 0.2);
@@ -241,8 +247,8 @@ function changeBusynessOpacity() {
   busynessHeatmap.set("opacity", busynessHeatmap.get("opacity") ? null : 0.2);
 }
 
-function changeTrafficGradient() {
-  console.log("Changing traffic gradient");
+function changeBusynessGradient() {
+  console.log("Changing busyness gradient");
   const gradient = [
     "rgba(0, 255, 255, 0)",
     "rgba(0, 255, 255, 1)",
@@ -259,15 +265,26 @@ function changeTrafficGradient() {
     "rgba(191, 0, 31, 1)",
     "rgba(255, 0, 0, 1)"
   ];
-  trafficHeatmap.set("gradient", trafficHeatmap.get("gradient") ? null : gradient);
+  busynessHeatmap.set("gradient", busynessHeatmap.get("gradient") ? null : gradient);
 }
 
-function changeRadius() {
+function changeRadius(viewportDelta) {
   console.log("Changing radius");
-  trafficHeatmap.set("radius", trafficHeatmap.get("radius") ? null : 10);
-  busynessHeatmap.set("radius", busynessHeatmap.get("radius") ? null : 10);
-}
 
+  if (viewportDelta < 0.01) {
+    console.log("Radius busyness: 50, traffic: 25, delta: " + viewportDelta);
+    busynessHeatmap.set("radius", 40);
+    trafficHeatmap.set("radius", 40);
+  } else if (viewportDelta > 0.1) {
+    console.log("Radius busyness: 0, traffic: 1, delta: " + viewportDelta);
+    busynessHeatmap.set("radius", 5);
+    trafficHeatmap.set("radius", 5);
+  } else {
+    console.log("Radius busyness: 10, traffic: 5, delta: " + viewportDelta);
+    busynessHeatmap.set("radius", 15);
+    trafficHeatmap.set("radius", 15);
+  }  
+}
 
 function sendPOST(path, dataDict, onResponseCallback){
   let xhr = new XMLHttpRequest();
@@ -307,12 +324,18 @@ function convertToMapObjectsTraffic(data) {
 function getTime() {
   return document.getElementById('range').firstElementChild.value - 1;
 }
+var dayName = "Sunday";
 function getDay(){
-  let x=document.querySelectorAll('.btn-group button:focus')
-  if (x.length===0){
-    return "Sunday";
-  }
-  else{
-    return x[0].innerHTML;
+  return dayName;
+}
+function button_active(id){
+  let x=document.querySelectorAll('.day-btn');
+  var len=x.length
+  for ( var i=0 ;i<len; i++){
+    x[i].classList.remove("button-active");
+    if(x[i].innerHTML===id){
+      x[i].classList.add("button-active");
+      dayName=x[i].innerHTML;
+    }
   }
 }

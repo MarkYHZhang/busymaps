@@ -45,7 +45,7 @@
       border-radius: 70% 50% 70% 50% / 66% 50% 70% 40%;
       transform: translate(-50%, -50%);
   }
-  25% { 
+  25% {
       border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
       transform: translate(calc(-50% + 3px), calc(-50% + 3px));
   }
@@ -264,9 +264,13 @@
 .btn-group button:hover {
   background-color: #17263b;
 }
-.btn-group button:focus{
+/* .btn-group button:focus{
     background-color:#17263b;
     border-color: #17263b
+} */
+.button-active{
+  background-color:#17263b!important;
+  border-color: #17263b!important;
 }
 
 /* Item content */
