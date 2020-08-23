@@ -8,9 +8,10 @@ from flask_cors import CORS
 app = Flask(__name__, static_url_path='')
 CORS(app, support_credentials=True)
 
-idling = None
-with open('backend/idling.json') as f:
-    idling = json.load(f)
+idling = []
+for i in range(4):
+    with open('backend/'+str(i)+'.json') as f:
+        idling += json.load(f)
 
 busy = []
 with open('backend/parks.json') as f:
@@ -21,12 +22,13 @@ from flask import render_template
 def metrics():
     return render_template("frontend/index/index.html")
 
-
+import time
 """
 swLongitude, swLatitude, neLongitude, neLatitude, hourOfDay
 """
 @app.route("/traffic/", methods = ['POST'])
 def traffic():
+
     data = json.loads(request.data)
     swLatitude = float(data['swLatitude'])
     swLongitude = float(data['swLongitude'])
@@ -34,6 +36,8 @@ def traffic():
     neLongitude = float(data['neLongitude'])
     hourOfDay = str(data["hourOfDay"]).zfill(2)
     response = []
+
+    s = time.time()
     for place in idling:
         lng = float(place["Longitude"])
         lat = float(place["Latitude"])
@@ -46,7 +50,10 @@ def traffic():
             "longitude": lng,
             "percentage": idlingByHour
         })
-    return jsonify(response)
+
+    re = jsonify(response)
+    print((time.time() - s))
+    return re
 
 
 @app.route("/placebusyness/", methods=['POST'])
