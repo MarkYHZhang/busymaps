@@ -338,4 +338,6 @@ function button_active(id){
       dayName=x[i].innerHTML;
     }
   }
+
+  $(document).trigger('date-changed');
 }

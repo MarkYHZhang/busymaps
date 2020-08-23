@@ -5,16 +5,21 @@ window.onload = function() {
     closeLoading();
 
     detectInfoWindowChange();
+    detectTimeChange();
 }
 
 function detectInfoWindowChange() {
     $('#infowindow-content').on('data-attribute-changed', function() {
         console.log(this);
-        let busyness = document.getElementById('busyness').getAttribute('data-busyness');
-        let time = document.getElementById('busyness').getAttribute('data-time');
+        let e = document.getElementById('busyness');
+
+        if (!e || e == null || e == 'undefined') return;
+
+        let busyness = e.getAttribute('data-busyness');
+        let time = e.getAttribute('data-time');
         let value = 0;
 
-        if (busyness == 'undefined' || time == 'undefined') {
+        if (busyness == 'undefined' || time == 'undefined' || busyness == null || time == null) {
             $('#busyness-value').text(`No data`);
         } else {
             busyness = JSON.parse(busyness);
@@ -25,7 +30,15 @@ function detectInfoWindowChange() {
 
         $('#busyness-chart').empty();
         generateChart('busyness-chart', value);
+    })
+}
 
+function detectTimeChange() {
+    $(document).on('time-changed', function() {
+        console.log(getTime());
+        let time = document.getElementById('busyness').setAttribute('data-time', JSON.stringify(getTime()));
+
+        $('#infowindow-content').trigger('data-attribute-changed');
     })
 }
 
@@ -110,6 +123,7 @@ function range() {
 
     $rangeInput.on('input', function () {
         sheet.textContent = getTrackStyle(this);
+        $(document).trigger('time-changed');
     });
 
     // Change input value on label click
@@ -117,5 +131,6 @@ function range() {
         let index = $(this).index();
     
         $rangeInput.val(index + 1).trigger('input');
+        $(document).trigger('date-changed');
     });
 }
