@@ -454,7 +454,7 @@ function button_active(id){
   let len=x.length
   for ( let i=0 ;i<len; i++){
     x[i].classList.remove("selected");
-    if(x[i].innerHTML===id){
+    if(id.includes(x[i].innerHTML)){
       x[i].classList.add("selected");
       dayName=x[i].innerHTML;
     }
