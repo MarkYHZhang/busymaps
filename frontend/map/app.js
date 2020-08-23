@@ -28,12 +28,12 @@ function detectInfoWindowChange() {
             if (busyness.length == 0) return;
             
             time = JSON.parse(time);
-            value = busyness[time] / 100;
-            $('#busyness-value').text(`${value}`);
+            value = busyness[time];
+            $('#busyness-value').text(`${value}%`);
         }
 
         $('#busyness-chart').empty();
-        generateChart('busyness-chart', value);
+        generateChart('busyness-chart', value/100);
     })
 }
 

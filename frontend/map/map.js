@@ -150,6 +150,9 @@ function initMap() {
   changeRadius(0.5);
   changeBusynessGradient();
 
+  busynessHeatmap.set("opacity", 0.4);
+  trafficHeatmap.set("opacity", 0.5);
+
   const input = document.getElementById("pac-input");
   const autocomplete = new google.maps.places.Autocomplete(input);
   autocomplete.bindTo("bounds", map); // Specify just the place data fields that you need.
@@ -239,12 +242,12 @@ function toggleBusynessHeatmap() {
 }
 function changeTrafficOpacity() {
   console.log("Changing traffic opacity");
-  trafficHeatmap.set("opacity", trafficHeatmap.get("opacity") ? null : 0.2);
+  trafficHeatmap.set("opacity", trafficHeatmap.get("opacity")===0.2 ? 0.5 : 0.2);
 }
 
 function changeBusynessOpacity() {
   console.log("Changing busyness opacity");
-  busynessHeatmap.set("opacity", busynessHeatmap.get("opacity") ? null : 0.2);
+  busynessHeatmap.set("opacity", busynessHeatmap.get("opacity")===0.2 ? 0.4 : 0.2);
 }
 
 function changeBusynessGradient() {
@@ -254,8 +257,8 @@ function changeBusynessGradient() {
     "rgba(0, 255, 255, 1)",
     "rgba(0, 191, 255, 1)",
     "rgba(0, 127, 255, 1)",
-    "rgba(0, 63, 255, 1)",
-    "rgba(0, 0, 255, 1)",
+    "rgb(65,106,236)",
+    "rgb(78,78,255)",
     "rgba(0, 0, 223, 1)",
     "rgba(0, 0, 191, 1)",
     "rgba(0, 0, 159, 1)",
@@ -280,12 +283,12 @@ function changeRadius(viewportDelta) {
     trafficHeatmap.set("radius", 40);
   } else if (viewportDelta > 0.1) {
     console.log("Radius busyness: 0, traffic: 1, delta: " + viewportDelta);
-    busynessHeatmap.set("radius", 10);
+    busynessHeatmap.set("radius", 13);
     trafficHeatmap.set("radius", 10);
   } else {
     console.log("Radius busyness: 10, traffic: 5, delta: " + viewportDelta);
     busynessHeatmap.set("radius", 22);
-    trafficHeatmap.set("radius", 22);
+    trafficHeatmap.set("radius", 20);
   }
 }
 
