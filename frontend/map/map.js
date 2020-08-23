@@ -115,6 +115,13 @@ function initMap() {
 
   map.addListener("zoom_changed", function() {
     console.log("Zoom changed")
+    var bounds = map.getBounds();
+    latNE = bounds.getNorthEast().lat();
+    lngNE = bounds.getNorthEast().lng();
+    latSW = bounds.getSouthWest().lat();
+    lngSW = bounds.getSouthWest().lng();
+    retrieveDataTraffic(latSW, lngSW, latNE, lngNE);
+    retrieveDataBusyness(latSW, lngSW, latNE, lngNE);
   });
 
   changeRadius(0.5);
