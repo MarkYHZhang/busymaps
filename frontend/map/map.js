@@ -199,8 +199,6 @@ function initMap() {
         console.log(json.response);
       }
 
-      infowindowContent.children.namedItem("latitude").textContent = json.latitude;
-      infowindowContent.children.namedItem("longitude").textContent = json.longitude;
       infowindowContent.children.namedItem("busyness").setAttribute("data-busyness", JSON.stringify(json.percentage));
       infowindowContent.children.namedItem("busyness").setAttribute("data-time", JSON.stringify(getTime()));
       infowindowContent.children.namedItem("place-name").textContent = place.name;
@@ -275,7 +273,7 @@ function changeRadius(viewportDelta) {
     console.log("Radius busyness: 10, traffic: 5, delta: " + viewportDelta);
     busynessHeatmap.set("radius", 15);
     trafficHeatmap.set("radius", 15);
-  } 
+  }
 }
 
 function retrieveDataTraffic(swLatitude, swLongitude, neLatitude, neLongitude) {
