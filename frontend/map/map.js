@@ -124,6 +124,17 @@ function initMap() {
     retrieveDataBusyness(latSW, lngSW, latNE, lngNE);
   });
 
+  map.addListener("dragend", function() {
+    console.log("drag changed")
+    var bounds = map.getBounds();
+    latNE = bounds.getNorthEast().lat();
+    lngNE = bounds.getNorthEast().lng();
+    latSW = bounds.getSouthWest().lat();
+    lngSW = bounds.getSouthWest().lng();
+    retrieveDataTraffic(latSW, lngSW, latNE, lngNE);
+    retrieveDataBusyness(latSW, lngSW, latNE, lngNE);
+  });
+
   rangeSlider = document.getElementById('range');
   rangeSlider.addEventListener('input', function () {
     console.log("Range slider change")
